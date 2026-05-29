@@ -1,4 +1,5 @@
 import express from "express";
+import "dotenv/config";
 import { YTComment, YTDataResponse } from "./types";
 
 const app = express();
@@ -29,7 +30,7 @@ app.get("/api/v1/comment-analysis", async (req, res) => {
 			return;
 		}
 
-		const apiKey = "";
+		const apiKey = process.env.YOUTUBE_API_KEY;
 		const url: string = `https://www.googleapis.com/youtube/v3/commentThreads?part=snippet&videoId=${videoID}&maxResults=100&order=relevance&key=${apiKey}`;
 
 		// call YT API
@@ -38,6 +39,8 @@ app.get("/api/v1/comment-analysis", async (req, res) => {
 			res
 				.status(response.status)
 				.json({ message: "Error: YT Data API request failed" });
+
+			// TODO: fix error catchign, log error to server aswell
 		}
 		const videoCommentResponse: YTDataResponse =
 			(await response.json()) as YTDataResponse;
@@ -51,12 +54,10 @@ app.get("/api/v1/comment-analysis", async (req, res) => {
 		}
 
 		// able to retrieve comments
-		// for (const c of comments) {
-		// 	console.log(`Comment ${c.id}: ${c.comment}`);
-		// }
+		for (const c of comments) {
+			console.log(`Comment ${c.id}: ${c.comment}`);
+		}
 		// TODO: check cache
-
-		// test
 
 		// call embeddings model
 
