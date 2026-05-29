@@ -1,0 +1,19 @@
+{
+  "name": "CommentScope",
+  "description": "See all perspectives",
+  "version": "1.0",
+  "permissions": ["tabs", "scripting"],
+  "manifest_version": 3,
+  "content_scripts": [
+        {
+            "matches": ["https://*.youtube.com/*"],
+            "js": ["contentScript.js"]
+        }
+    ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": ""
+  }
+}
